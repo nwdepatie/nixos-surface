@@ -50,9 +50,6 @@
 
   # https://github.com/NixOS/nixpkgs/blob/4ecab3273592f27479a583fb6d975d4aba3486fe/nixos/modules/services/x11/desktop-managers/gnome.nix#L459
 
-  # Configure keymap in X11
-  services.xserver.layout = "us";
-
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
@@ -107,7 +104,7 @@
     isNormalUser = true;
     description = "Nick DePatie";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [ spotify slack vscode ];
+    packages = with pkgs; [ spotify slack vscode btop ];
   };
 
   # Install fish
@@ -135,6 +132,8 @@
     vim
     wget
     gnomeExtensions.fullscreen-to-empty-workspace
+    gnome.gnome-terminal
+    gnome.gnome-tweaks
     iftop
     lm_sensors
     screen
@@ -143,6 +142,7 @@
     binutils
     mosh
     git
+    htop
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

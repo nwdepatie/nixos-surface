@@ -1,5 +1,6 @@
 { config, pkgs, ... }: {
 
+
   # https://github.com/fthx/no-overview/tree/main
   # is also helpful to ensure we end up on a desktop instead of the launcher.
   # Forked to https://github.com/iwanders/gnome-no-overview-extension
@@ -19,7 +20,6 @@
     # https://github.com/NixOS/nixpkgs/blob/4ecab3273592f27479a583fb6d975d4aba3486fe/nixos/modules/services/x11/desktop-managers/gnome.nix#L459
 
     # Configure keymap in X11
-    services.xserver.layout = "us";
     # services.xserver.xkbOptions = "eurosign:e,caps:escape";
     services.xserver.enable = true;
     services.xserver.displayManager.gdm.enable = true;
