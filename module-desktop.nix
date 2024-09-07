@@ -1,6 +1,5 @@
 { config, pkgs, ... }: {
 
-
   # https://github.com/fthx/no-overview/tree/main
   # is also helpful to ensure we end up on a desktop instead of the launcher.
   # Forked to https://github.com/iwanders/gnome-no-overview-extension
@@ -11,14 +10,11 @@
   options = { };
 
   config = {
-
-
     # Surface related stuff.
     services.iptsd.enable = true;
 
     sound.enable = true;
     hardware.pulseaudio.enable = true;
-
 
     # https://github.com/NixOS/nixpkgs/blob/4ecab3273592f27479a583fb6d975d4aba3486fe/nixos/modules/services/x11/desktop-managers/gnome.nix#L459
 
@@ -58,57 +54,5 @@
     services.xserver.desktopManager.gnome.enable = true;
 
     services.gnome.core-utilities.enable = false;
-
-    services.usbmuxd.enable = true; # For mounting ios devices.
-
-    # well, that (utilities false) still pulls in orca, with speech synthesis, for many megabytes.
-    # https://github.com/NixOS/nixpkgs/blob/4ecab3273592f27479a583fb6d975d4aba3486fe/nixos/modules/services/x11/desktop-managers/gnome.nix#L459
-    # https://discourse.nixos.org/t/howto-disable-most-gnome-default-applications-and-what-they-are/13505
-    environment.gnome.excludePackages = (with pkgs.gnome; [
-      baobab # disk usage analyzer
-      epiphany # web browser
-      gedit # text editor
-      simple-scan # document scanner
-      totem # video player
-      yelp # help viewer
-      geary # email client
-      seahorse # password manager
-      gnome-calculator
-      gnome-calendar
-      gnome-characters
-      gnome-clocks
-      gnome-contacts
-      gnome-font-viewer
-      gnome-logs
-      gnome-maps
-      gnome-music
-      gnome-screenshot
-      gnome-weather
-      pkgs.gnome-connections
-    ]) ++ (with pkgs; [ orca ]);
-
-    # We also lose nautilus now though, so we add back stuff we actually care about...
-    environment.systemPackages = (with pkgs.gnome; [
-      eog # image viewer
-      evince # document viewer
-      file-roller # archive manager
-      gnome-terminal
-      gnome-system-monitor
-      gnome-disk-utility
-      nautilus
-      gvfs # for mounting ios devices.
-    ]) ++ (with pkgs; [
-      vlc
-      mplayer
-      scite
-      chromium
-      gimp
-      xorg.xwininfo
-      thunderbird
-      firefox
-      # For mounting ios devices:
-      libimobiledevice
-      ifuse # optional, to mount using 'ifuse'
-    ]);
   };
 }
