@@ -1,17 +1,16 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/release-23.11";
-    nixos-hardware.url =
-      "github:NixOS/nixos-hardware/master";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
   outputs = { self, nixpkgs, nixos-hardware }: rec {
     nixosConfigurations.papyrus = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
+        nixos-hardware.nixosModules.microsoft-surface-pro-intel
         ./configuration-base.nix
         ./configuration.nix
-        nixos-hardware.nixosModules.microsoft-surface-pro-intel
 
         # From https://blog.thalheim.io/2022/12/17/hacking-on-kernel-modules-in-nixos/ this adds
         # the flake to /run/booted-system/
@@ -46,7 +45,7 @@
         ./configuration-base.nix
         nixos-hardware.nixosModules.microsoft-surface-pro-intel
 
-      # "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-gnome.nix"
+        # "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-gnome.nix"
         "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
         ({ pkgs, ... }: { environment.systemPackages = [ pkgs.vim ]; })
 
@@ -76,14 +75,12 @@
         }
 
         ({ pkgs, ... }: {
-          services.getty.helpLine =
-      ''
-        Exit the prompt to see this help again.
-        The nixos-surface repo can be found at /home/nixos/nixos-surface/.
-      '';
+          services.getty.helpLine = ''
+            Exit the prompt to see this help again.
+            The nixos-surface repo can be found at /home/nixos/nixos-surface/.
+          '';
 
-        boot.postBootCommands =
-          ''
+          boot.postBootCommands = ''
             ln -s ${self} /home/nixos/nixos-surface
           '';
         })

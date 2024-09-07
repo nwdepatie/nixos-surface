@@ -7,51 +7,35 @@
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   boot.initrd.availableKernelModules =
-    [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" ];
+    [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/60e6c81b-770f-49ce-bd71-ca3a33a80faa";
-    fsType = "btrfs";
-    options = [ "subvol=root" ];
-  };
-
-  boot.initrd.luks.devices."cryptroot".device =
-    "/dev/disk/by-uuid/2cda11da-c9ba-4002-b628-a39aec89225f";
-
-  fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/60e6c81b-770f-49ce-bd71-ca3a33a80faa";
-    fsType = "btrfs";
-    options = [ "subvol=home" ];
-  };
-
-  fileSystems."/nix" = {
-    device = "/dev/disk/by-uuid/60e6c81b-770f-49ce-bd71-ca3a33a80faa";
-    fsType = "btrfs";
-    options = [ "subvol=nix" ];
+    device = "/dev/disk/by-uuid/60ef17d9-c0f4-458f-a921-4cb4aadee0ff";
+    fsType = "ext4";
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/A893-D76C";
+    device = "/dev/disk/by-uuid/ED7A-A2DA";
     fsType = "vfat";
+    options = [ "fmask=0077" "dmask=0077" ];
   };
 
-  swapDevices = [{
-    device = "/swapfile";
-    size = 16000;
-  }];
+  swapDevices =
+    [{ device = "/dev/disk/by-uuid/41654416-160c-4ec3-bdee-466d5d2f83b2"; }];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlp0s20f3.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlp1s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware.cpu.intel.updateMicrocode =
     lib.mkDefault config.hardware.enableRedistributableFirmware;
+
+  services.thermald.enable = true;
 }
